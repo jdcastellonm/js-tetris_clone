@@ -10,6 +10,15 @@ const matrix = [
     [0, 1, 0]
 ];
 
+// create playing field
+function createField(width, height) {
+    const fieldMatrix = [];
+    while (height--) {
+        fieldMatrix.push(new Array(width).fill(0));
+    }
+    return fieldMatrix;
+}
+
 const player = {
     position: {x: 5, y: 5},
     matrix: matrix
@@ -35,6 +44,24 @@ function draw() {
     drawPiece(player.matrix, player.position);
 }
 
+// piece movement events
+document.addEventListener('keydown', event => {
+    if (event.keyCode === 37) {
+        player.position.x--;
+    }
+    else if (event.keyCode === 39) {
+        player.position.x++;
+    }
+    else if (event.keyCode === 40) {
+        softDrop();
+    }
+})
+
+function softDrop() {
+    player.position.y++;
+    elapsedMilliseconds = 0;
+}
+
 // update the game state, interval depends on chosen difficulty
 /*
 'deltaTime' is the amount of time it takes for a frame to be drawn to the screen, usually dependant
@@ -57,9 +84,8 @@ function update(time = 0) {
     let deltaTime = time - previousTime;
     previousTime = time;
     elapsedMilliseconds += deltaTime;
-    if (elapsedMilliseconds > CHOSEN_DIFFICULTY) {
-        player.position.y++;
-        elapsedMilliseconds = 0;
+    if (elapsedMilliseconds > CHOSEN_DIFFICULTY) { // once the set amount of seconds pass, drop the piece by 1 y-value
+        softDrop();
     }
     draw();
     requestAnimationFrame(update); 
