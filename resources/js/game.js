@@ -78,16 +78,67 @@ function draw() {
 
 // piece movement events
 document.addEventListener('keydown', event => {
-    if (event.keyCode === 37) {
-        player.position.x--;
+    if (event.keyCode === 37) { // left
+        sideControls(-1);
     }
-    else if (event.keyCode === 39) {
-        player.position.x++;
+    else if (event.keyCode === 39) { // right
+        sideControls(1);
     }
-    else if (event.keyCode === 40) {
+    else if (event.keyCode === 65) { // rotate left with 'a'
+        rotateWithCollision(-1);
+    } 
+    else if (event.keyCode === 68 || event.keyCode === 38) { // rotate right with 'd' or 'up'
+        rotateWithCollision(1);
+    } 
+    else if (event.keyCode === 40) { // down
         softDrop();
     }
 })
+
+// move the piece left or right, check for collision
+function sideControls(direction) {
+    player.position.x += direction;
+    if (collision(field, player)) {
+        player.position.x -= direction;
+    }
+}
+
+// piece rotation
+function rotate(piece, direction) { // transpose the matrix first
+    for (let row = 0; row < piece.length; row++) {
+        for (let col = 0; col < row; col++) {
+            [piece[row][col], piece[col][row]] = [piece[col][row], piece[row][col]]; // swap the values using tuple/destructing assignment
+        }
+    }
+    // then reverse it
+    if (direction < 0) {
+        piece.forEach(row => row.reverse());
+    }
+    else {
+        piece.reverse();
+    }
+}
+
+// check for collision when rotating
+// an 'offset' value is used to push the piece away from the occupied area
+// this value alternates between +/- because we don't know where the collision is coming from
+// the game might push the piece into the wall, so on the next iteration of the loop, the push will
+// go on the opposite direction, + 1.
+// this means the collision check may be required multiple times, so a while loop is used
+function rotateWithCollision (direction) {
+    let position = player.position.x;
+    let offset = 1;
+    rotate(player.matrix, direction);
+    while (collision(field, player)) {
+        player.position.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
+        // if (offset > player.matrix[0].length) {
+            // rotate(player.matrix, -direction);
+            // player.position.x = position;
+            // return;
+        // }
+    }
+}
 
 function softDrop() {
     player.position.y++;
