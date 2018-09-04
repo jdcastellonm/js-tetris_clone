@@ -4,11 +4,64 @@ const ctx = canvas.getContext('2d');
 ctx.scale(20,20);
 
 // pieces
-const matrix = [
-    [0, 0, 0],
-    [1, 1, 1],
-    [0, 1, 0]
-];
+function spawnPiece(type) {
+    switch (type) {
+        case 'T':
+            return [
+                [0, 0, 0],
+                [1, 1, 1],
+                [0, 1, 0]
+            ];
+            break;
+        case 'I':
+            return [
+                [0, 0, 2, 0],
+                [0, 0, 2, 0],
+                [0, 0, 2, 0],
+                [0, 0, 2, 0]
+            ];
+            break;
+        case 'S':
+            return [
+                [0, 0, 0],
+                [0, 3, 3],
+                [3, 3, 0]
+            ];
+            break;
+        case 'Z':
+            return [
+                [0, 0, 0],
+                [4, 4, 0],
+                [0, 4, 4]
+            ];
+            break;
+        case 'L':
+            return [
+                [0, 5, 0],
+                [0, 5, 0],
+                [0, 5, 5]
+            ];
+            break;
+        case 'J':
+            return [
+                [0, 6, 0],
+                [0, 6, 0],
+                [6, 6, 0]
+            ];
+            break;
+        case 'O':
+            return [
+                [7, 7],
+                [7, 7]
+            ];
+            break;
+        default:
+            break;
+    }
+}
+
+// piece colors
+const color = [null, 'blueviolet', 'aquamarine', 'forestgreen', 'crimson', 'darkorange', 'darkslateblue', 'darkkhaki'];
 
 // create playing field
 // the field is represented by a 2D array where 0's are empty spaces and non-zeros are occupied
@@ -24,7 +77,7 @@ const field = createField(12, 20);
 
 const player = {
     position: {x: 5, y: 0},
-    matrix: matrix
+    matrix: spawnPiece('L')
 }
 
 // populate the 2D array field with non-zero values which represent the spaces
@@ -62,7 +115,7 @@ function drawPiece(matrix, offset) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                ctx.fillStyle = 'green';
+                ctx.fillStyle = color[value];
                 ctx.fillRect(x + offset.x, y + offset.y, 1, 1);
             }
         });
