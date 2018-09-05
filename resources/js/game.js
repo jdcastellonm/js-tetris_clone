@@ -73,16 +73,16 @@ function createField(width, height) {
     return fieldMatrix;
 }
 
-const field = createField(12, 20);
+const field = createField(10, 20);
 
 const player = {
-    position: {x: 5, y: 0},
+    position: {x: (field[0].length / 2) - 1, y: 0},
     matrix: spawnPiece('L')
 }
 
 // populate the 2D array field with non-zero values which represent the spaces
 // where the player has their pieces
-function spawn_on_field(field, player) {
+function populateFieldArray(field, player) {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
@@ -197,10 +197,41 @@ function softDrop() {
     player.position.y++;
     if (collision(field, player))  { // if theres collision, move the piece back up by 1, so that they don't 'fuse'
         player.position.y--;
-        spawn_on_field(field, player);
-        player.position.y = 0; // reset player position back to top
+        populateFieldArray(field, player);
+        lineCheck();
+        resetPlayer();
     }
     elapsedMilliseconds = 0;
+}
+
+// check for a line clear. the loop should start from the bottom, not top
+function lineCheck() {
+        current_row: for (let row = field.length - 1; row >= 0; row--) {
+        for (let col = 0; col < field[row].length; col++) {
+            if (field[row][col] === 0)
+                continue current_row;
+        }
+        // remove/splice the filled row out and immediately fill it with zeros, then insert this zero'd row back at the top
+        // this will drop the lines above it. 'row' must be manually incremented or else the next filled line to get pushed
+        // down will be passed over since it now has the current row index.
+        let clearedRow = field.splice(row, 1)[0].fill(0);
+        field.unshift(clearedRow);
+        row++;
+    }
+}
+
+// after piece deploys, reset player back to top with a new random piece
+function resetPlayer() {
+    const pieces = 'TISZLJO';
+    player.matrix = spawnPiece(pieces[Math.floor(Math.random() * 7)]);
+    player.position.y = 0;
+    player.position.x = (field[0].length / 2) - 1;
+
+    // check for game over
+    if (collision(field, player)) {
+        field.forEach(row => row.fill(0));
+        alert("Game Over!");
+    }
 }
 
 // update the game state, interval depends on chosen difficulty
