@@ -8,9 +8,9 @@ function spawnPiece(type) {
     switch (type) {
         case 'T':
             return [
-                [0, 0, 0],
                 [1, 1, 1],
-                [0, 1, 0]
+                [0, 1, 0],
+                [0, 0, 0]
             ];
             break;
         case 'I':
@@ -23,16 +23,16 @@ function spawnPiece(type) {
             break;
         case 'S':
             return [
-                [0, 0, 0],
                 [0, 3, 3],
-                [3, 3, 0]
+                [3, 3, 0],
+                [0, 0, 0]
             ];
             break;
         case 'Z':
             return [
-                [0, 0, 0],
                 [4, 4, 0],
-                [0, 4, 4]
+                [0, 4, 4],
+                [0, 0, 0]
             ];
             break;
         case 'L':
@@ -76,8 +76,8 @@ function createField(width, height) {
 const field = createField(10, 20);
 
 const player = {
-    position: {x: (field[0].length / 2) - 1, y: 0},
-    matrix: spawnPiece('L')
+    position: {x: 0, y: 0},
+    matrix: []
 }
 
 // populate the 2D array field with non-zero values which represent the spaces
@@ -144,7 +144,7 @@ document.addEventListener('keydown', event => {
         rotateWithCollision(1);
     } 
     else if (event.keyCode === 40) { // down
-        softDrop();
+        pieceDrop();
     }
 })
 
@@ -193,7 +193,7 @@ function rotateWithCollision (direction) {
     }
 }
 
-function softDrop() {
+function pieceDrop() {
     player.position.y++;
     if (collision(field, player))  { // if theres collision, move the piece back up by 1, so that they don't 'fuse'
         player.position.y--;
@@ -257,10 +257,10 @@ function update(time = 0) {
     previousTime = time;
     elapsedMilliseconds += deltaTime;
     if (elapsedMilliseconds > CHOSEN_DIFFICULTY) { // once the set amount of seconds pass, drop the piece by 1 y-value
-        softDrop();
+        pieceDrop();
     }
     draw();
     requestAnimationFrame(update); 
 }
-
+resetPlayer();
 update();
