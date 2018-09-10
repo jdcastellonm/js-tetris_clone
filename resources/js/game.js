@@ -77,7 +77,8 @@ const field = createField(10, 20);
 
 const player = {
     position: {x: 0, y: 0},
-    matrix: []
+    matrix: [],
+    score: 0
 }
 
 // populate the 2D array field with non-zero values which represent the spaces
@@ -204,24 +205,33 @@ function pieceDrop() {
         populateFieldArray(field, player);
         lineCheck();
         resetPlayer();
+        updateScore();
     }
     elapsedMilliseconds = 0;
 }
 
 // drop piece to the first occupied position in the field
 function hardDrop() {
+    let lineCount = 0;
     while (!(collision(field, player))) {
         player.position.y++;
+        lineCount++;
     }
     player.position.y--;
+    lineCount--;
     populateFieldArray(field, player);
     lineCheck();
+    if (lineCount > 1) { // award points based on how early the player hard drops the piece
+        player.score += lineCount + 10;
+    }
     resetPlayer();
+    updateScore();
     elapsedMilliseconds = 0;
 }
 
 // check for a line clear. the loop should start from the bottom, not top
 function lineCheck() {
+    let lineCounter = 1;
         current_row: for (let row = field.length - 1; row >= 0; row--) {
         for (let col = 0; col < field[row].length; col++) {
             if (field[row][col] === 0)
@@ -233,6 +243,10 @@ function lineCheck() {
         let clearedRow = field.splice(row, 1)[0].fill(0);
         field.unshift(clearedRow);
         row++;
+
+        // award points. first line is worth 100 points. subsequent lines are doubled.
+        player.score += lineCounter * 100;
+        lineCounter *= 2;
     }
 }
 
@@ -247,7 +261,13 @@ function resetPlayer() {
     if (collision(field, player)) {
         field.forEach(row => row.fill(0));
         alert("Game Over!");
+        player.score = 0;
     }
+}
+
+// update the score display
+function updateScore() {
+    document.getElementById("score-hud").innerText = player.score;
 }
 
 // update the game state, interval depends on chosen difficulty
