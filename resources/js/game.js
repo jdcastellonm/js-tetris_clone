@@ -146,6 +146,9 @@ document.addEventListener('keydown', event => {
     else if (event.keyCode === 40) { // down
         pieceDrop();
     }
+    else if (event.keyCode === 32) {
+        hardDrop();
+    }
 })
 
 // move the piece left or right, check for collision
@@ -193,6 +196,7 @@ function rotateWithCollision (direction) {
     }
 }
 
+// drop piece by 1 tile
 function pieceDrop() {
     player.position.y++;
     if (collision(field, player))  { // if theres collision, move the piece back up by 1, so that they don't 'fuse'
@@ -201,6 +205,18 @@ function pieceDrop() {
         lineCheck();
         resetPlayer();
     }
+    elapsedMilliseconds = 0;
+}
+
+// drop piece to the first occupied position in the field
+function hardDrop() {
+    while (!(collision(field, player))) {
+        player.position.y++;
+    }
+    player.position.y--;
+    populateFieldArray(field, player);
+    lineCheck();
+    resetPlayer();
     elapsedMilliseconds = 0;
 }
 
