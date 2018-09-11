@@ -1,0 +1,16 @@
+body {
+    background: #242D46;
+    color: white;
+    text-align: center;
+}
+canvas {
+    height: 90vh;
+    display: inline-block;
+    /* margin-top: 10vh; */
+}
+.score-hud {
+    margin: 0 auto;
+    /* display: inline-block; */
+    width: 200px;
+    vertical-align: top;
+}

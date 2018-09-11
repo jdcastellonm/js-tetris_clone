@@ -267,7 +267,7 @@ function resetPlayer() {
 
 // update the score display
 function updateScore() {
-    document.getElementById("score-hud").innerText = player.score;
+    document.getElementById("score-hud").innerText = "Score: " + player.score;
 }
 
 // update the game state, interval depends on chosen difficulty
@@ -299,4 +299,5 @@ function update(time = 0) {
     requestAnimationFrame(update); 
 }
 resetPlayer();
+updateScore();
 update();
