@@ -78,7 +78,8 @@ const field = createField(10, 20);
 const player = {
     position: {x: 0, y: 0},
     matrix: [],
-    score: 0
+    score: 0,
+    linesCleared: 0
 }
 
 // populate the 2D array field with non-zero values which represent the spaces
@@ -247,6 +248,7 @@ function lineCheck() {
         // award points. first line is worth 100 points. subsequent lines are doubled.
         player.score += lineCounter * 100;
         lineCounter *= 2;
+        player.linesCleared++;
     }
 }
 
@@ -265,9 +267,10 @@ function resetPlayer() {
     }
 }
 
-// update the score display
+// update the score and line display
 function updateScore() {
     document.getElementById("score-hud").innerText = "Score: " + player.score;
+    document.getElementById("lines-hud").innerText = "Lines: " + player.linesCleared;
 }
 
 // update the game state, interval depends on chosen difficulty

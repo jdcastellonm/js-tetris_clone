@@ -1,16 +1,21 @@
 body {
     background: #242D46;
     color: white;
-    text-align: center;
+    /* text-align: center; */
+}
+.grid {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    width: 1140px;
 }
 canvas {
     height: 90vh;
-    display: inline-block;
-    /* margin-top: 10vh; */
 }
 .score-hud {
     margin: 0 auto;
-    /* display: inline-block; */
     width: 200px;
-    vertical-align: top;
+    align-self: start;
+    /* vertical-align: top; */
 }
