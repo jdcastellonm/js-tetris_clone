@@ -1,21 +1,30 @@
 body {
     background: #242D46;
     color: white;
-    /* text-align: center; */
+    font-size: 25px;
 }
 .grid {
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
+    grid-auto-rows: minmax(min-content, auto);
+    grid-gap: 5px;
     width: 1140px;
+    justify-items: center;
 }
 canvas {
     height: 90vh;
 }
-.score-hud {
-    margin: 0 auto;
-    width: 200px;
+.hud {
     align-self: start;
-    /* vertical-align: top; */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+    justify-items: center;
+}
+.howto {
+    font-size: 75%;
+}
+.rounded-border {
+    border-radius: 10px;
 }

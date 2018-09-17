@@ -15,10 +15,10 @@ function spawnPiece(type) {
             break;
         case 'I':
             return [
-                [0, 0, 2, 0],
-                [0, 0, 2, 0],
-                [0, 0, 2, 0],
-                [0, 0, 2, 0]
+                [0, 2, 0, 0],
+                [0, 2, 0, 0],
+                [0, 2, 0, 0],
+                [0, 2, 0, 0]
             ];
             break;
         case 'S':
@@ -169,7 +169,7 @@ function rotate(piece, direction) { // transpose the matrix first
         }
     }
     // then reverse it
-    if (direction < 0) {
+    if (direction > 0) {
         piece.forEach(row => row.reverse());
     }
     else {
@@ -269,8 +269,8 @@ function resetPlayer() {
 
 // update the score and line display
 function updateScore() {
-    document.getElementById("score-hud").innerText = "Score: " + player.score;
-    document.getElementById("lines-hud").innerText = "Lines: " + player.linesCleared;
+    document.getElementById("js-score-hud").innerText = player.score;
+    document.getElementById("js-lines-hud").innerText = player.linesCleared;
 }
 
 // update the game state, interval depends on chosen difficulty

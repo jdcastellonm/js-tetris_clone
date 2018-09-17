@@ -9,12 +9,24 @@
 </head>
 <body>
     <div class="grid">
-        <div class="score-hud">
-            <h2 id="score-hud"></h2>
+        <div class="hud howto">
+            <fieldset class="rounded-border">
+                <legend>Controls</legend>
+                <div>Use arrow keys to move.</div>
+                <div>A, D - Rotate piece.</div>
+                <div>Space - Hard drop</div>
+            </fieldset>
         </div>
         <canvas id="tetris" width="200" height="400"></canvas>
-        <div class="score-hud">
-            <h2 id="lines-hud">Lines: </h2>
+        <div class="hud">
+            <fieldset class="rounded-border">
+                <legend>Score</legend>
+                <div id="js-score-hud"></div>
+            </fieldset>
+            <fieldset class="rounded-border">
+                <legend>Lines</legend>
+                <div id="js-lines-hud"></div>
+            </fieldset>
         </div>
     </div>
 </body>
