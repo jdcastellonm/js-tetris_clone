@@ -79,7 +79,8 @@ const player = {
     position: {x: 0, y: 0},
     matrix: [],
     score: 0,
-    linesCleared: 0
+    linesCleared: 0,
+    level: 0
 }
 
 // populate the 2D array field with non-zero values which represent the spaces
@@ -249,6 +250,10 @@ function lineCheck() {
         player.score += lineCounter * 100;
         lineCounter *= 2;
         player.linesCleared++;
+        if (player.linesCleared % 10 === 0 && player.level < 9) {
+            player.level++;
+            DIFFICULTY -= 300;
+        }
     }
 }
 
@@ -271,6 +276,7 @@ function resetPlayer() {
 function updateScore() {
     document.getElementById("js-score-hud").innerText = player.score;
     document.getElementById("js-lines-hud").innerText = player.linesCleared;
+    document.getElementById("js-level-hud").innerText = player.level;
 }
 
 // update the game state, interval depends on chosen difficulty
@@ -281,12 +287,8 @@ value is accumulated into 'ellapsedMilliseconds' and if it reaches the 'CHOSEN_D
 then that amount of time has passed. When that happens, update the player piece position then reset
 the elapsed time to 0.
 */
-const DIFFICULTY = {
-    EASY: 3000,
-    NORMAL: 1000,
-    HARD: 500
-}
-var CHOSEN_DIFFICULTY = DIFFICULTY.NORMAL;
+var DIFFICULTY = 3000;
+
 let elapsedMilliseconds = 0;
 let previousTime = 0;
 // 'time' is the elapsed time when the function was called. this parameter comes from requestAnimationFrame()
@@ -295,7 +297,7 @@ function update(time = 0) {
     let deltaTime = time - previousTime;
     previousTime = time;
     elapsedMilliseconds += deltaTime;
-    if (elapsedMilliseconds > CHOSEN_DIFFICULTY) { // once the set amount of seconds pass, drop the piece by 1 y-value
+    if (elapsedMilliseconds > DIFFICULTY) { // once the set amount of seconds pass, drop the piece by 1 y-value
         pieceDrop();
     }
     draw();
