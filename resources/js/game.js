@@ -62,6 +62,8 @@ function spawnPiece(type) {
 
 // piece colors
 const color = [null, 'blueviolet', 'aquamarine', 'forestgreen', 'crimson', 'darkorange', 'darkslateblue', 'darkkhaki'];
+// piece names used for spawning them
+const pieces = 'TISZLJO';
 
 // create playing field
 // the field is represented by a 2D array where 0's are empty spaces and non-zeros are occupied
@@ -78,6 +80,7 @@ const field = createField(10, 20);
 const player = {
     position: {x: 0, y: 0},
     matrix: [],
+    nextPiece: [],
     score: 0,
     linesCleared: 0,
     level: 0
@@ -250,6 +253,7 @@ function lineCheck() {
         player.score += lineCounter * 100;
         lineCounter *= 2;
         player.linesCleared++;
+        // increase player level (and speed) every 10 lines
         if (player.linesCleared % 10 === 0 && player.level < 9) {
             player.level++;
             DIFFICULTY -= 300;
@@ -259,8 +263,8 @@ function lineCheck() {
 
 // after piece deploys, reset player back to top with a new random piece
 function resetPlayer() {
-    const pieces = 'TISZLJO';
-    player.matrix = spawnPiece(pieces[Math.floor(Math.random() * 7)]);
+    player.matrix = player.nextPiece;
+    player.nextPiece = spawnPiece(pieces[Math.floor(Math.random() * 7)]);
     player.position.y = 0;
     player.position.x = (field[0].length / 2) - 1;
 
@@ -277,6 +281,20 @@ function updateScore() {
     document.getElementById("js-score-hud").innerText = player.score;
     document.getElementById("js-lines-hud").innerText = player.linesCleared;
     document.getElementById("js-level-hud").innerText = player.level;
+    updateNext();
+}
+// update the next piece hud
+const nextSrcs = {
+    1: "resources/img/T.jpeg",
+    2: "resources/img/I.jpeg",
+    3: "resources/img/S.jpeg",
+    4: "resources/img/Z.jpeg",
+    5: "resources/img/L.jpeg",
+    6: "resources/img/J.jpeg",
+    7: "resources/img/O.jpeg"
+}
+function updateNext() {
+    document.getElementById("js-next-hud").src = nextSrcs[player.nextPiece[0][1]];
 }
 
 // update the game state, interval depends on chosen difficulty
@@ -303,6 +321,8 @@ function update(time = 0) {
     draw();
     requestAnimationFrame(update); 
 }
+// spawn the first piece, and initialize the hud values
+player.nextPiece = spawnPiece(pieces[Math.floor(Math.random() * 7)]);
 resetPlayer();
 updateScore();
 update();

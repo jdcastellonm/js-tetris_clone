@@ -28,3 +28,12 @@ canvas {
 .rounded-border {
     border-radius: 10px;
 }
+.next-hud {
+    width: 170px;
+    height: 190px;
+    background-color: black;
+}
+.center-next-img {
+    display: block;
+    margin: auto;
+}
