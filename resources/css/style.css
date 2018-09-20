@@ -2,6 +2,11 @@ body {
     background: #242D46;
     color: white;
     font-size: 25px;
+    background-image: linear-gradient(rgba(0,0,0,0.50), rgba(0,0,0.50)), url(img/bg.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
 }
 .grid {
     margin: 0 auto;
@@ -10,10 +15,12 @@ body {
     grid-auto-rows: minmax(min-content, auto);
     grid-gap: 5px;
     width: 1140px;
-    justify-items: center;
 }
 canvas {
     height: 90vh;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: bisque;
 }
 .hud {
     align-self: start;
@@ -27,6 +34,7 @@ canvas {
 }
 .rounded-border {
     border-radius: 10px;
+    border-color: bisque;
 }
 .next-hud {
     width: 170px;
